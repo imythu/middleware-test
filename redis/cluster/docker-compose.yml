@@ -1,0 +1,79 @@
+version: "3"
+services:
+  node1:
+    image: redis:latest
+    container_name: node1
+    network_mode: host
+    restart: unless-stopped
+    command:
+      - /usr/local/etc/redis/redis.conf
+    volumes:
+      - "./node1/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./node1/data:/data"
+  node2:
+    image: redis:latest
+    network_mode: host
+    restart: unless-stopped
+    command:
+      - /usr/local/etc/redis/redis.conf
+    volumes:
+      - "./node2/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./node2/data:/data"
+  node3:
+    image: redis:latest
+    network_mode: host
+    restart: unless-stopped
+    command:
+      - /usr/local/etc/redis/redis.conf
+    volumes:
+      - "./node3/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./node3/data:/data"
+  node4:
+    image: redis:latest
+    network_mode: host
+    restart: unless-stopped
+    command:
+      - /usr/local/etc/redis/redis.conf
+    volumes:
+      - "./node4/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./node4/data:/data"
+  node5:
+    image: redis:latest
+    network_mode: host
+    restart: unless-stopped
+    command:
+      - /usr/local/etc/redis/redis.conf
+    volumes:
+      - "./node5/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./node5/data:/data"
+  node6:
+    image: redis:latest
+    network_mode: host
+    restart: unless-stopped
+    command:
+      - /usr/local/etc/redis/redis.conf
+    volumes:
+      - "./node6/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./node6/data:/data"
+  cluster-creator:
+    image: redis:latest
+    network_mode: host
+    depends_on:
+      - node1
+      - node2
+      - node3
+      - node4
+      - node5
+      - node6
+    command:
+      - sh
+      - -c
+      - |
+        redis-cli \
+        -a init_config_password \
+        --cluster create \
+        init_config_host_ip:init_config_port1 init_config_host_ip:init_config_port2 \
+        init_config_host_ip:init_config_port3 init_config_host_ip:init_config_port4 \
+        init_config_host_ip:init_config_port5 init_config_host_ip:init_config_port6 \
+        --cluster-replicas 1  --cluster-yes \
+
