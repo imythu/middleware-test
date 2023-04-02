@@ -1,0 +1,3 @@
+- `git clone https://github.com/imythu/middleware-test.git`
+- `cd redis/single`
+- `docker compose up -d`
